@@ -214,3 +214,55 @@ Flexibility
 Best Practices
 ==============
 
+Stubs
+-----
+
+* More pieces in the system make development and testing harder
+* You've just composed your apps to streamline your work; setup should also be streamlined
+
+excon-artifice
+--------------
+
+* Patches Excon to route calls to a Rack app
+* Based on Wycat's Artifice, that does the same thing for Net::HTTP
+* Easy stubbing for test purposes
+
+    ``` ruby
+    stub(Config).billing_api { "https://billing-api.localhost" }
+    stub(Config).process_api { "https://process-api.localhost" }
+
+    # stub with fully functional Rack apps
+    Artifice::Excon.activate_for(Config.billing_api, BillingAPIStub.new)
+    Artifice::Excon.activate_for(Config.process_api, ProcessAPIStub.new)
+    ```
+
+And it's a Rack app!
+--------------------
+
+* Add it to your `Procfile`:
+
+    ``` bash
+    web:         bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT
+    billing_api: bundle exec thin start -R stubs/billing_api.ru -e $RACK_ENV -p $PORT
+    process_api: bundle exec thin start -R stubs/process_api.ru -e $RACK_ENV -p $PORT
+    ```
+
+* Deploy onto your platform
+
+Platform
+--------
+
+* Use Heroku. Obviously.
+
+... but if you can't
+--------------------
+
+* The pain to deploy a new app must be low
+* The pain to deploy a new app formation should be low
+* Allow reconfiguration
+    * Web can point to a production API or a deployed stub
+
+@brandur
+--------
+
+brandur@mutelight.org
