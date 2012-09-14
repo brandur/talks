@@ -2,7 +2,7 @@ Intro
 -----
 
 @brandur
-![http://logos.heroku.com/images/heroku-logo-light-234x60.png](Heroku logo)
+![Heroku logo](http://logos.heroku.com/images/heroku-logo-light-234x60.png)
 
 Agenda
 ------
@@ -206,6 +206,7 @@ Flexibility
 * Use an agnostic protocol (stay HTTP)
 * Then use the right tool for the right job
 
+@todo: real diagram
     ```
     --> Ruby (psmgr)       --> Ruby (API)   --> Ruby (Dashboard)
     --> Erlang (logplex)                    --> Scala (Manager API) --> Ruby (Manager web)
