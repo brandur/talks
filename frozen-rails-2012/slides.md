@@ -148,6 +148,69 @@ A Good API is a Reusable API
 Composable Apps
 ===============
 
+Composability
+-------------
+
+```
+    API     <-      CLI + developers
+
+     |
+     v
+
+    Web     <-      Other users
+```
+
+Service oriented architecture
+-----------------------------
+
+* Loosely coupled components
+* Encourages strong contracts (they're required)
+* Independent scaling of each service
+* API is a critical factor the increasingly important mobile component
+
+Rails as frontend
+-----------------
+
+* Great at interface
+    * Template options
+    * Asset pipeline
+* Maintenance of state through sessions
+* Security considerations: XSS/CSRF/etc.
+
+Rails as API
+------------
+
+* Helpers/views become less useful
+* ActiveRecord pretty good, but it's now decoupled
+* `ActiveRecord::Serialization#to_json` is a bad idea when strong contracts are important
+* APIs are about verbs and nouns
+    * A routing DSL is an unneeded layer of abstraction
+
+First-class APIs
+----------------
+
+* We're not post-Rails, we just moved it up a layer
+
+Logistically
+------------
+
+* Smaller teams
+* Happiness
+    * Designers and frontend people get to work on a thin web app
+    * Backend people don't have to worry about CSS floats
+* Internal self-service
+
+Flexibility
+-----------
+
+* Use an agnostic protocol (stay HTTP)
+* Then use the right tool for the right job
+
+    ```
+    --> Ruby (psmgr)       --> Ruby (API)   --> Ruby (Dashboard)
+    --> Erlang (logplex)                    --> Scala (Manager API) --> Ruby (Manager web)
+    ```
+
 Best Practices
 ==============
 
