@@ -230,10 +230,11 @@ end
 * Then use the right tool for the right job
 
 @todo: real diagram
-    ```
-    --> Ruby (psmgr)       --> Ruby (API)   --> Ruby (Dashboard)
-    --> Erlang (logplex)                    --> Scala (Manager API) --> Ruby (Manager web)
-    ```
+
+```
+--> Ruby (psmgr)       --> Ruby (API)   --> Ruby (Dashboard)
+--> Erlang (logplex)                    --> Scala (Manager API) --> Ruby (Manager web)
+```
 
 # Best Practices
 
