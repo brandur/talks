@@ -1,23 +1,19 @@
-Intro
------
+## Intro
 
 @brandur
 ![Heroku logo](http://logos.heroku.com/images/heroku-logo-light-234x60.png)
 
-Agenda
-------
+## Agenda
 
 * A story of composition
 * Composable apps
 * Best practices
 
-A Story of Composition
-======================
+# A Story of Composition
 
 From thick to thin.
 
-Heroku's API team
------------------
+## Heroku's API team
 
 * If you've used the CLI, you've use the API
 
@@ -36,15 +32,13 @@ Heroku's API team
     curl --user ":$API_KEY" -i https://api.heroku.com/apps
     ```
 
-Core
-----
+## Core
 
 * A Rails app
 * Then, a **BIG RAILS APP**
 * Severe impact on development velocity and effort
 
-Things were broken out
-----------------------
+## Things were broken out
 
 * Process management
 * Billing
@@ -52,13 +46,11 @@ Things were broken out
 * Kernel layer infrastructure management
 * Domain management
 
-BUTC
-====
+# BUTC
 
 Break Up the Core!
 
-Still too big
--------------
+## Still too big
 
 * The goal is something small and agile
 * Rails taught us to design an API like this:
@@ -72,14 +64,12 @@ Still too big
 
 * But we're an API, why should the web component get special treatment?
 
-Dashboard
----------
+## Dashboard
 
 @todo
 [INSERT SCREENSHOT]
 
-Implementation
---------------
+## Implementation
 
 * Rails
 * Heroku.rb: the backend that handles API calls for the CLI
@@ -97,8 +87,7 @@ Implementation
 
 * Dashboard is also built on Heroku.rb
 
-Shout-out to the Fat Client
----------------------------
+## The Fat Client
 
 * We enjoy the Ruby experience
 * Puts all the elements in place for a fat client
@@ -112,8 +101,7 @@ Shout-out to the Fat Client
     </script>
     ```
 
-Metrics
--------
+## Metrics
 
 * Dashboard
     * + 4500 LOCs (3200 Ruby + 1300 templates)
@@ -123,8 +111,7 @@ Metrics
     * - 11k (~15%)
     * Not the final win, but we'll take it
 
-Our API is Now an API
----------------------
+## Our API is Now an API
 
 ```
 Core    -->     Core     -->        Core            -->    *API*
@@ -133,8 +120,7 @@ Core    -->     Core     -->        Core            -->    *API*
                                                     -->     Web
 ```
 
-A Good API is a Reusable API
-----------------------------
+## A Good API is a Reusable API
 
 * Manager -- teams and organization management
 
@@ -145,11 +131,9 @@ A Good API is a Reusable API
     * API
     * Web
 
-Composable Apps
-===============
+# Composable Apps
 
-Composability
--------------
+## Composability
 
 ```
     API     <-      CLI + developers
@@ -160,16 +144,14 @@ Composability
     Web     <-      Other users
 ```
 
-Service oriented architecture
------------------------------
+## Service oriented architecture
 
 * Loosely coupled components
 * Encourages strong contracts (they're required)
 * Independent scaling of each service
 * API is a critical factor the increasingly important mobile component
 
-Rails as frontend
------------------
+## Rails as frontend
 
 * Great at interface
     * Template options
@@ -177,8 +159,7 @@ Rails as frontend
 * Maintenance of state through sessions
 * Security considerations: XSS/CSRF/etc.
 
-Rails as API
-------------
+## Rails as API
 
 * Helpers/views become less useful
 * ActiveRecord pretty good, but it's now decoupled
@@ -186,8 +167,7 @@ Rails as API
 * APIs are about verbs and nouns
     * A routing DSL is an unneeded layer of abstraction
 
-Sinatra as API
---------------
+## Sinatra as API
 
 ``` ruby
 get "/facts/:id" do |id|
@@ -206,8 +186,7 @@ end
 * Use the exact Rack middleware stack you need
 * Beyond a trivial app, forces consideration of project structure
 
-Grape as API
-------------
+## Grape as API
 
 ``` ruby
 class Facts::API < Grape::API
@@ -233,13 +212,11 @@ end
 * Parameter validation and coercion
 * Endpoint descriptions
 
-First-class APIs
-----------------
+## First-class APIs
 
 * We're not post-Rails, we just moved it up a layer
 
-Logistically
-------------
+## Logistically
 
 * Smaller teams
 * Happiness
@@ -247,8 +224,7 @@ Logistically
     * Backend people don't have to worry about CSS floats
 * Internal self-service
 
-Flexibility
------------
+## Flexibility
 
 * Use an agnostic protocol (stay HTTP)
 * Then use the right tool for the right job
@@ -259,17 +235,14 @@ Flexibility
     --> Erlang (logplex)                    --> Scala (Manager API) --> Ruby (Manager web)
     ```
 
-Best Practices
-==============
+# Best Practices
 
-Stubs
------
+## Stubs
 
 * More pieces in the system make development and testing harder
 * You've just composed your apps to streamline your work; setup should also be streamlined
 
-excon-artifice
---------------
+## excon-artifice
 
 * Patches Excon to route calls to a Rack app
 * Based on Wycat's Artifice, that does the same thing for Net::HTTP
@@ -284,8 +257,7 @@ excon-artifice
     Artifice::Excon.activate_for(Config.process_api, ProcessAPIStub.new)
     ```
 
-And it's a Rack app!
---------------------
+## And it's a Rack app!
 
 * Add it to your `Procfile`:
 
@@ -297,20 +269,17 @@ And it's a Rack app!
 
 * Deploy onto your platform
 
-Platform
---------
+## Platform
 
 * Use Heroku. Obviously.
 
-... but if you can't
---------------------
+## ... but if you can't
 
 * The pain to deploy a new app must be low
 * The pain to deploy a new app formation should be low
 * Allow reconfiguration
     * Web can point to a production API or a deployed stub
 
-@brandur
---------
+## @brandur
 
 brandur@mutelight.org
