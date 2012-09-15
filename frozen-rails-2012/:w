@@ -190,15 +190,15 @@ Sinatra as API
 --------------
 
 ``` ruby
-get "/facts/:id" do |id|
-  fact = Fact.first(id: id.to_i) || raise(NotFound)
-  [200, encode_json(fact)]
+get "/facts" do
+  [200, encode_json(Fact.all)]
 end
 
 post "/facts" do
-  fact = Fact.new(fact_params)
-  fact.save
-  [201, encode_json(fact)]
+  authorized!
+  @fact = Article.new(fact_params)
+  @fact.save
+  [201, encode_json(@fact)]
 end
 ```
 
@@ -209,29 +209,8 @@ end
 Grape as API
 ------------
 
-``` ruby
-class Facts::API < Grape::API
-  version 'v0', :using => :header
-
-  resources :facts do
-    get ":id" do
-      fact = Fact.first(id: params[:id].to_i) || raise(NotFound)
-      encode_json(fact)
-    end
-
-    post do
-      fact = Fact.new(fact_params)
-      fact.save
-      encode_json(fact)
-    end
-  end
-end
 ```
-
-* For those willing to accommodate a layer of abstraction
-* Versioning
-* Parameter validation and coercion
-* Endpoint descriptions
+class Facts::API < Grape::API
 
 First-class APIs
 ----------------
