@@ -5,11 +5,11 @@
 
 ## Agenda
 
-* A story of composition
+* A tale of composition
 * Composable apps
 * Best practices
 
-# A Story of Composition
+# A tale of Composition
 
 From thick to thin.
 
@@ -31,6 +31,10 @@ From thick to thin.
     # you can your API key from ~/.netrc
     curl --user ":$API_KEY" -i https://api.heroku.com/apps
     ```
+
+## We're also responsible for this
+
+@todo: screenshot of api.heroku.com
 
 ## Core
 
@@ -86,6 +90,16 @@ Break Up the Core!
     ```
 
 * Dashboard is also built on Heroku.rb
+
+## API calls happen on the backend.
+
+``` ruby
+class AppsController < ApplicationController
+  def index
+    @apps = @api.get_apps
+  end
+end
+```
 
 ## The Fat Client
 
@@ -190,7 +204,7 @@ end
 
 ``` ruby
 class Facts::API < Grape::API
-  version 'v0', :using => :header
+  version 'v0', using: :header
 
   resources :facts do
     get ":id" do
@@ -199,26 +213,24 @@ class Facts::API < Grape::API
     end
 
     post do
-      fact = Fact.new(fact_params)
-      fact.save
+      fact = Fact.create(fact_params)
       encode_json(fact)
     end
   end
 end
 ```
 
-* For those willing to accommodate a layer of abstraction
-* Versioning
-* Parameter validation and coercion
-* Endpoint descriptions
+* Patterns for versioning, parameter validation and coercion, and endpoint descriptions
 
 ## First-class APIs
 
-* We're not post-Rails, we just moved it up a layer
+* We're not post-Rails, but we did move it up a layer
 
-## Logistically
+## Logistics
 
-* Smaller teams
+* Smaller and more specialized teams
+  * **Before:** three backend people, a designer, and a handful of frontend engineers
+  * **After:** API is three backend people; Dashboard is a designer and a frontend engineer
 * Happiness
     * Designers and frontend people get to work on a thin web app
     * Backend people don't have to worry about CSS floats
@@ -243,29 +255,43 @@ end
 * More pieces in the system make development and testing harder
 * You've just composed your apps to streamline your work; setup should also be streamlined
 
+## We started with this.
+
+``` ruby
+class AppsController < ApplicationController
+  def index
+    @apps = if production?
+      @api.get_apps
+    else
+      []
+    end
+  end
+end
+```
+
 ## excon-artifice
 
 * Patches Excon to route calls to a Rack app
 * Based on Wycat's Artifice, that does the same thing for Net::HTTP
 * Easy stubbing for test purposes
 
-    ``` ruby
-    stub(Config).billing_api { "https://billing-api.localhost" }
-    stub(Config).process_api { "https://process-api.localhost" }
+``` ruby
+stub(Config).billing_api { "https://billing-api.localhost" }
+stub(Config).process_api { "https://process-api.localhost" }
 
-    # stub with fully functional Rack apps
-    Artifice::Excon.activate_for(Config.billing_api, BillingAPIStub.new)
-    Artifice::Excon.activate_for(Config.process_api, ProcessAPIStub.new)
-    ```
+# stub with fully functional Rack apps
+Artifice::Excon.activate_for(Config.billing_api, BillingAPIStub.new)
+Artifice::Excon.activate_for(Config.process_api, ProcessAPIStub.new)
+```
 
-## And it's a Rack app!
+## And you get Rack apps!
 
 * Add it to your `Procfile`:
 
     ``` bash
-    web:         bundle exec thin start -R config.ru -e $RACK_ENV -p $PORT
-    billing_api: bundle exec thin start -R stubs/billing_api.ru -e $RACK_ENV -p $PORT
-    process_api: bundle exec thin start -R stubs/process_api.ru -e $RACK_ENV -p $PORT
+    web:         bundle exec thin start -R config.ru -p $PORT
+    billing_api: bundle exec thin start -R stubs/billing_api.ru -p $PORT
+    process_api: bundle exec thin start -R stubs/process_api.ru -p $PORT
     ```
 
 * Deploy onto your platform
@@ -276,9 +302,9 @@ end
 
 ## ... but if you can't
 
-* The pain to deploy a new app must be low
-* The pain to deploy a new app formation should be low
-* Allow reconfiguration
+* Pain to deploy a new app must be low
+* Pain to deploy a new app formation should be low
+* Easy reconfiguration
     * Web can point to a production API or a deployed stub
 
 ## @brandur
