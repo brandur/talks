@@ -144,6 +144,8 @@ Core    -->     Core     -->        Core            -->    *API*
 * Manager is further composed into two tiers
     * API
     * Web
+* Core's API separately consumed by Dashboard, Manager, and the CLI
+
 
 # Composable Apps
 
@@ -161,7 +163,7 @@ Core    -->     Core     -->        Core            -->    *API*
 ## Service oriented architecture
 
 * Loosely coupled components
-* Encourages strong contracts (they're required)
+* Encourages strong contracts (they're a necessity)
 * Independent scaling of each service
 * API is a critical factor the increasingly important mobile component
 
@@ -178,7 +180,7 @@ Core    -->     Core     -->        Core            -->    *API*
 * Helpers/views become less useful
 * ActiveRecord pretty good, but it's now decoupled
 * `ActiveRecord::Serialization#to_json` is a bad idea when strong contracts are important
-* APIs are about verbs and nouns
+* RESTful APIs are about verbs and nouns
     * A routing DSL is an unneeded layer of abstraction
 
 ## Sinatra as API
@@ -298,7 +300,7 @@ Artifice::Excon.activate_for(Config.process_api, ProcessAPIStub.new)
 
 ## Platform
 
-* Use Heroku. Obviously.
+* Use Heroku. It's obviously the right decision.
 
 ## ... but if you can't
 

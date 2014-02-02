@@ -2,6 +2,8 @@
 
 ## Title
 
+Testing, Operating, Owning, and Loving Your Service-oriented Architecture
+
 ## Abstract
 
 ## Notes for the organizers
